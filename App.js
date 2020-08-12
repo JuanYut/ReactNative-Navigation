@@ -21,11 +21,6 @@ const HomeScreen = ({ navigation }) => {
   );
 };
 
-// HomeScreen.navigationOptions = ({ navigation }) => {
-//   return {
-//     title: navigation.getParam("title", "Cargando..."),
-//   };
-// };
 HomeScreen.navigationOptions = {
   headerTitle: <Logo />,
   headerStyle: {
@@ -64,7 +59,7 @@ DetailsScreen.navigationOptions = ({ navigation, navigationOptions }) => {
     title: navigation.getParam("title", "Cargando..."),
     headerRight: (
       <Button
-        onPress={navigation.getParam("plusOne")}
+        onPress={() => navigation.navigate("MyModal")}
         title="Plus 1"
         color="#222"
       />
@@ -102,11 +97,22 @@ const AppNavigator = createStackNavigator(
   }
 );
 
+const RootStack = createStackNavigator(
+  {
+    Main: AppNavigator,
+    MyModal: () => <Text>Modal lalala</Text>,
+  },
+  {
+    mode: "modal",
+    headerMode: "none",
+  }
+);
+
 /*
   createAppContainer creara un componente que va a manejar todo el estado de navegacion de la aplicacion.
   Recibe un componente que tiene que ser de navegacion.
 */
-export default createAppContainer(AppNavigator);
+export default createAppContainer(RootStack);
 
 const styles = StyleSheet.create({
   container: {
