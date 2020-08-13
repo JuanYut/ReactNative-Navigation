@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
+import { Ionicons } from "@expo/vector-icons";
 import { StyleSheet, Text, View, Button } from "react-native";
 import { createAppContainer } from "react-navigation";
 import { createStackNavigator } from "react-navigation-stack";
+import { createBottomTabNavigator } from "react-navigation-tabs";
 
 const Logo = () => <Text>Title Component</Text>;
 
@@ -54,7 +56,7 @@ const DetailsScreen = ({ navigation }) => {
   );
 };
 
-DetailsScreen.navigationOptions = ({ navigation, navigationOptions }) => {
+DetailsScreen.navigationOptions = ({ navigation }) => {
   return {
     title: navigation.getParam("title", "Cargando..."),
     headerRight: (
@@ -64,9 +66,6 @@ DetailsScreen.navigationOptions = ({ navigation, navigationOptions }) => {
         color="#222"
       />
     ),
-    headerStyle: {
-      backgroundColor: navigationOptions.headerStyle.backgroundColor,
-    },
   };
 };
 
@@ -74,7 +73,7 @@ DetailsScreen.navigationOptions = ({ navigation, navigationOptions }) => {
   Componente de navegacion
   recibe un obj de configuracion, el cual seran las pantallas de navegacion.
 */
-const AppNavigator = createStackNavigator(
+const AppNavigator = createBottomTabNavigator(
   {
     Home: {
       screen: HomeScreen,
@@ -85,15 +84,30 @@ const AppNavigator = createStackNavigator(
   },
   {
     initialRouteName: "Home",
-    defaultNavigationOptions: {
-      headerStyle: {
-        backgroundColor: "#222",
+    defaultNavigationOptions: ({ navigation }) => ({
+      tabBarIcon: ({ focused, horizontal, tintColor }) => {
+        const { routeName } = navigation.state;
+        let iconName;
+        if (routeName === "Home") {
+          iconName = `ios-information-circle${focused ? "" : "-outline"}`;
+        } else {
+          iconName = "ios-options";
+        }
+
+        return <Ionicons name={iconName} size={20} tintColor={tintColor} />;
       },
-      headerTintColor: "#ff5f40",
-      headerTitleStyle: {
-        fontWeight: "900",
+      tabBarOptions: {
+        activeTintColor:
+          navigation.state.routeName == "Home" ? "orange" : "white",
+        inactiveTintColor: "white",
+        labelStyle: {
+          fontSize: 16,
+        },
+        style: {
+          backgroundColor: "#222",
+        },
       },
-    },
+    }),
   }
 );
 
