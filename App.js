@@ -4,6 +4,7 @@ import { StyleSheet, Text, View, Button } from "react-native";
 import { createAppContainer } from "react-navigation";
 import { createStackNavigator } from "react-navigation-stack";
 import { createBottomTabNavigator } from "react-navigation-tabs";
+import { createDrawerNavigator } from "react-navigation-drawer";
 
 const Logo = () => <Text>Title Component</Text>;
 
@@ -15,22 +16,21 @@ const HomeScreen = ({ navigation }) => {
       <Button
         title="Go to Details"
         // onPress={() => navigation.push("Details")}
-        onPress={() =>
-          navigation.navigate("Details", { title: "User 1", user_id: 1 })
-        }
+        onPress={() => navigation.openDrawer()}
       />
     </View>
   );
 };
 
 HomeScreen.navigationOptions = {
+  drawerIcon: ({ tintColor }) => {
+    return (
+      <Ionicons name="ios-information-circle" size={25} color={tintColor} />
+    );
+  },
   headerTitle: <Logo />,
   headerStyle: {
-    backgroundColor: "#ffeecc",
-  },
-  headerTintColor: "#222",
-  headerTitleStyle: {
-    fontWeight: "bold",
+    backgroundColor: "#f00",
   },
 };
 
@@ -63,7 +63,7 @@ DetailsScreen.navigationOptions = ({ navigation }) => {
       <Button
         onPress={() => navigation.navigate("MyModal")}
         title="Plus 1"
-        color="#222"
+        color="#555"
       />
     ),
   };
@@ -73,7 +73,7 @@ DetailsScreen.navigationOptions = ({ navigation }) => {
   Componente de navegacion
   recibe un obj de configuracion, el cual seran las pantallas de navegacion.
 */
-const AppNavigator = createBottomTabNavigator(
+const AppNavigator = createDrawerNavigator(
   {
     Home: {
       screen: HomeScreen,
@@ -84,30 +84,6 @@ const AppNavigator = createBottomTabNavigator(
   },
   {
     initialRouteName: "Home",
-    defaultNavigationOptions: ({ navigation }) => ({
-      tabBarIcon: ({ focused, horizontal, tintColor }) => {
-        const { routeName } = navigation.state;
-        let iconName;
-        if (routeName === "Home") {
-          iconName = `ios-information-circle${focused ? "" : "-outline"}`;
-        } else {
-          iconName = "ios-options";
-        }
-
-        return <Ionicons name={iconName} size={20} tintColor={tintColor} />;
-      },
-      tabBarOptions: {
-        activeTintColor:
-          navigation.state.routeName == "Home" ? "orange" : "white",
-        inactiveTintColor: "white",
-        labelStyle: {
-          fontSize: 16,
-        },
-        style: {
-          backgroundColor: "#222",
-        },
-      },
-    }),
   }
 );
 
