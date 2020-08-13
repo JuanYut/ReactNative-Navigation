@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import { StyleSheet, Text, View, Button } from "react-native";
-import { createAppContainer } from "react-navigation";
+import { createAppContainer, createSwitchNavigator } from "react-navigation"; // createSwitchNavigator
 import { createStackNavigator } from "react-navigation-stack";
 import { createBottomTabNavigator } from "react-navigation-tabs";
 import { createDrawerNavigator } from "react-navigation-drawer";
@@ -16,7 +16,7 @@ const HomeScreen = ({ navigation }) => {
       <Button
         title="Go to Details"
         // onPress={() => navigation.push("Details")}
-        onPress={() => navigation.openDrawer()}
+        onPress={() => navigation.navigate("Details")}
       />
     </View>
   );
@@ -73,7 +73,7 @@ DetailsScreen.navigationOptions = ({ navigation }) => {
   Componente de navegacion
   recibe un obj de configuracion, el cual seran las pantallas de navegacion.
 */
-const AppNavigator = createDrawerNavigator(
+const AppNavigator = createSwitchNavigator(
   {
     Home: {
       screen: HomeScreen,
